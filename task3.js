@@ -40,22 +40,22 @@ class KCStore {
         console.log("Product added successfully.");
     }
 
-    updateProduct(oldProduct, newProduct) {
-        const index = this.products.indexOf(oldProduct); 
-        if (index !== -1) {
-            this.products[index] = newProduct;
-            console.log("Product updated successfully.");
-        }else {
+    updateProduct(id, newProduct) {
+        const product = this.products.find(product => product.id === id); 
+        if (!product) {
             console.log("Product not found.");
+            return;
         }
+        Object.assign(product, newProduct);
+        console.log("Product updated successfully.");
     }
     
     viewProducts() {
         return this.products;
     }   
 
-    deleteProduct(product) {
-        const index = this.products.indexOf(product);
+    deleteProduct(id) {
+        const index = this.products.findIndex(product => product.id === id);
         if (index !== -1) {
             this.products.splice(index, 1);
             console.log("Product deleted successfully.");
@@ -66,10 +66,10 @@ class KCStore {
 }
 
 const store = new KCStore();
-store.addProduct("Laptop");
-store.addProduct("Smartphone");
+store.addProduct({id: 1, name: "Laptop", price: 1000});
+store.addProduct({id: 2, name: "Smartphone", price: 500});
 console.log(store.viewProducts());
-store.updateProduct("Laptop", "Gaming Laptop");
+store.updateProduct(1, {id: 1, name: "Gaming Laptop", price: 1500});
 console.log(store.viewProducts());
-store.deleteProduct("Smartphone");
+store.deleteProduct(1);
 console.log(store.viewProducts());
